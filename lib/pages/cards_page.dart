@@ -61,6 +61,12 @@ class _CardsPageState extends State<CardsPage> {
         currentIndex++;
         allowTap = true;
       });
+
+      if (currentIndex >= players.length) {
+        Future.delayed(const Duration(milliseconds: 800), () {
+          Navigator.pushNamed(context, '/describe');
+        });
+      }
     });
   }
 
@@ -88,7 +94,7 @@ class _CardsPageState extends State<CardsPage> {
                 crossAxisCount: 2,
                 mainAxisSpacing: 16,
                 crossAxisSpacing: 16,
-                childAspectRatio: 0.7,
+                childAspectRatio: 0.8,
               ),
               padding: const EdgeInsets.all(16),
               itemCount: players.length,
@@ -105,7 +111,7 @@ class _CardsPageState extends State<CardsPage> {
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
-                      side: const BorderSide(color: Colors.indigo, width: 1),
+                      side: const BorderSide(color: Colors.indigo, width: 2),
                     ),
                     child: const Center(
                       child: Icon(
@@ -119,13 +125,6 @@ class _CardsPageState extends State<CardsPage> {
               },
             ),
           ),
-          if (currentIndex < players.length)
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/setup');
-              },
-              child: const Text("Start Game"),
-            ),
         ],
       ),
     );
