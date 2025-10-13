@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/player.dart';
 import '../utils/game_manager.dart';
+import '../utils/validator.dart';
 
 class SetupPage extends StatefulWidget {
   const SetupPage({super.key});
@@ -12,6 +13,7 @@ class SetupPage extends StatefulWidget {
 class _SetupPageState extends State<SetupPage> {
   int numberOfPlayers = 3;
   List<Player> players = [];
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -43,60 +45,68 @@ class _SetupPageState extends State<SetupPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Number Of Players"),
-            Slider(
-              value: numberOfPlayers.toDouble(),
-              min: 3,
-              max: 12,
-              divisions: 9,
-              label: numberOfPlayers.toString(),
-              onChanged: (value) {
-                setState(() {
-                  numberOfPlayers = value.toInt();
-                  _updatePlayers(numberOfPlayers);
-                });
-              },
-            ),
-            SizedBox(height: 20),
-            Text("Enter Names"),
-            SizedBox(height: 5),
-            Expanded(
-              child: ListView.builder(
-                itemCount: numberOfPlayers,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: TextField(
-                      onChanged: (value) {
-                        players[index].name = value;
-                      },
-                      decoration: InputDecoration(
-                        labelText: "Player ${index + 1}",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
-                    ),
-                  );
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Number Of Players"),
+              Slider(
+                value: numberOfPlayers.toDouble(),
+                min: 3,
+                max: 12,
+                divisions: 9,
+                label: numberOfPlayers.toString(),
+                onChanged: (value) {
+                  setState(() {
+                    numberOfPlayers = value.toInt();
+                    _updatePlayers(numberOfPlayers);
+                  });
                 },
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    _savePlayersToGameManager();
-                    Navigator.pushNamed(context, '/cards');
+              SizedBox(height: 20),
+              Text("Enter Names"),
+              SizedBox(height: 5),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: numberOfPlayers,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: TextFormField(
+                        initialValue: players[index].name,
+                        onChanged: (value) {
+                          players[index].name = value;
+                        },
+                        validator: (value) =>
+                            validatePlayerName(value, index, players),
+                        decoration: InputDecoration(
+                          labelText: "Player ${index + 1}",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                      ),
+                    );
                   },
-                  child: const Text("Continue"),
                 ),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _savePlayersToGameManager();
+                        Navigator.pushNamed(context, '/cards');
+                      }
+                    },
+                    child: const Text("Continue"),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
