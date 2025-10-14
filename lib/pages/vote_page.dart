@@ -76,12 +76,16 @@ class _VotePageState extends State<VotePage> {
   }
 
   bool isUndercoverEliminated() {
-    return activePlayers().any((p) => p.isUndercover && p.isEliminated);
+    return gameManager.players.any((p) => p.isUndercover && p.isEliminated);
   }
 
   bool canContinueGame() {
     final activePlayerCount = activePlayers().length;
     return !isUndercoverEliminated() && activePlayerCount > 2;
+  }
+
+  bool shouldShowWinScreen() {
+    return isUndercoverEliminated() || activePlayers().length <= 2;
   }
 
   @override
@@ -322,64 +326,65 @@ class _VotePageState extends State<VotePage> {
                 style: TextStyle(fontSize: 18, color: Colors.white),
               ),
             )
-          else if (isUndercoverEliminated())
-            Column(
-              children: [
-                const Text(
-                  'Citizens Win!',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green,
+          else if (shouldShowWinScreen())
+            if (isUndercoverEliminated())
+              Column(
+                children: [
+                  const Text(
+                    'Citizens Win!',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    gameManager.reset();
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      '/',
-                      (route) => false,
-                    );
-                  },
-                  child: const Text(
-                    'Back to Home',
-                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      gameManager.reset();
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        '/',
+                        (route) => false,
+                      );
+                    },
+                    child: const Text(
+                      'Back to Home',
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
                   ),
-                ),
-              ],
-            )
-          else
-            Column(
-              children: [
-                const Text(
-                  'Undercover Win!',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.red,
+                ],
+              )
+            else
+              Column(
+                children: [
+                  const Text(
+                    'Undercover Win!',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    gameManager.reset();
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      '/',
-                      (route) => false,
-                    );
-                  },
-                  child: const Text(
-                    'Back to Home',
-                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      gameManager.reset();
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        '/',
+                        (route) => false,
+                      );
+                    },
+                    child: const Text(
+                      'Back to Home',
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
           const SizedBox(height: 8),
         ],
       ),

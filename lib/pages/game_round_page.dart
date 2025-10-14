@@ -57,30 +57,38 @@ class _GameRoundPageState extends State<GameRoundPage> {
                   padding: const EdgeInsets.all(16),
                   itemCount: players.length,
                   itemBuilder: (context, index) {
+                    final player = players[index];
+                    final isEliminated = player.isEliminated;
                     return GestureDetector(
                       child: Card(
                         color: Colors.black,
                         elevation: 4,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
-                          side: const BorderSide(
-                            color: Colors.indigo,
+                          side: BorderSide(
+                            color: isEliminated
+                                ? Colors.grey.shade700
+                                : Colors.indigo,
                             width: 2,
                           ),
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.person_2,
                               size: 60,
-                              color: Colors.indigo,
+                              color: isEliminated
+                                  ? Colors.grey[700]
+                                  : Colors.indigo,
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              '#${index + 1} ${players[index].name}',
-                              style: const TextStyle(
-                                color: Colors.white,
+                              '#${index + 1} ${player.name}',
+                              style: TextStyle(
+                                color: isEliminated
+                                    ? Colors.grey[700]
+                                    : Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,
                               ),
