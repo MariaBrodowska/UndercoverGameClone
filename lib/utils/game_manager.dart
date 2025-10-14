@@ -1,4 +1,5 @@
 import 'package:undercover_game/models/player.dart';
+import 'package:undercover_game/models/word.dart';
 
 class GameManager {
   GameManager._privateConstructor();
@@ -11,9 +12,31 @@ class GameManager {
 
   List<Player> players = [];
   int currentRound = 1;
+  Word? currentWord;
+
+  int timerDuration = 30;
+  int currentTimeLeft = 0;
+  bool isTimerRunning = false;
 
   void reset() {
     players.clear();
     currentRound = 1;
+    currentWord = null;
+    currentTimeLeft = 0;
+    isTimerRunning = false;
+  }
+
+  void startTimer() {
+    currentTimeLeft = timerDuration;
+    isTimerRunning = true;
+  }
+
+  void stopTimer() {
+    isTimerRunning = false;
+  }
+
+  void resetTimer() {
+    currentTimeLeft = timerDuration;
+    isTimerRunning = false;
   }
 }

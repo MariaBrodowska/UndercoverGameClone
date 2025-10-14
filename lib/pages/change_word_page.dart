@@ -30,16 +30,15 @@ class _ChangeWordPageState extends State<ChangeWordPage> {
       player.isUndercover = false;
     }
     undercoverIndex = Random().nextInt(players.length);
+    players[undercoverIndex].isUndercover = true;
     chosenWord = (words..shuffle()).first;
+    GameManager().currentWord = chosenWord;
     revealed = List.generate(players.length, (_) => false);
   }
 
   void _showRoleDialog(int userIndex, int cardIndex) {
     final index = userIndex;
     final isUndercover = index == undercoverIndex;
-    if (isUndercover) {
-      players[index].isUndercover = true;
-    }
     setState(() {
       allowTap = false;
     });

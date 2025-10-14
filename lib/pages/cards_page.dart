@@ -26,15 +26,14 @@ class _CardsPageState extends State<CardsPage> {
     super.initState();
     players = List.of(GameManager().players)..shuffle();
     undercoverIndex = Random().nextInt(players.length);
+    players[undercoverIndex].isUndercover = true;
     chosenWord = (words..shuffle()).first;
+    GameManager().currentWord = chosenWord;
     revealed = List.generate(players.length, (_) => false);
   }
 
   void _showRoleDialog(int userIndex, int cardIndex) {
     final isUndercover = userIndex == undercoverIndex;
-    if (isUndercover) {
-      players[userIndex].isUndercover = true;
-    }
     setState(() {
       allowTap = false;
     });
@@ -53,7 +52,7 @@ class _CardsPageState extends State<CardsPage> {
       });
 
       if (currentIndex >= players.length) {
-        Future.delayed(const Duration(milliseconds: 100), () {
+        Future.delayed(const Duration(milliseconds: 500), () {
           Navigator.pushReplacementNamed(context, '/describe');
         });
       }

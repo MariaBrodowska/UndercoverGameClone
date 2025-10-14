@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:undercover_game/models/player.dart';
 import 'package:undercover_game/utils/game_manager.dart';
 import '../widgets/game_navigation_bar.dart';
+import '../widgets/timer_widget.dart';
 
 class GameRoundPage extends StatefulWidget {
   const GameRoundPage({super.key});
@@ -28,17 +29,23 @@ class _GameRoundPageState extends State<GameRoundPage> {
           padding: const EdgeInsets.all(12),
           child: Column(
             children: [
-              SizedBox(height: 25),
-              Text(
-                "Round ${GameManager().currentRound}",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 5),
-              Text(
-                "Describe your secret word in the idicated order, using just a word or phrase.",
+              const SizedBox(height: 25),
+              const Text(
+                "Describe your secret word in the indicated order, using just a word or phrase.",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 16),
               ),
+              const SizedBox(height: 30),
+              Text(
+                "Round ${GameManager().currentRound}",
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 10),
+              const TimerWidget(),
+              const SizedBox(height: 10),
               Expanded(
                 child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
