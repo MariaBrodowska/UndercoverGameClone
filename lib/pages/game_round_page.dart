@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:undercover_game/models/player.dart';
 import 'package:undercover_game/utils/game_manager.dart';
+import '../widgets/game_navigation_bar.dart';
 
 class GameRoundPage extends StatefulWidget {
   const GameRoundPage({super.key});
@@ -16,24 +17,12 @@ class _GameRoundPageState extends State<GameRoundPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('Description Time'),
         centerTitle: true,
         backgroundColor: Colors.indigo,
       ),
-      bottomNavigationBar: NavigationBar(
-        destinations: [
-          NavigationDestination(
-            icon: Icon(Icons.keyboard_return),
-            label: 'New Word',
-          ),
-          NavigationDestination(icon: Icon(Icons.settings), label: 'Settings'),
-          NavigationDestination(icon: Icon(Icons.av_timer), label: 'Timer'),
-          NavigationDestination(
-            icon: Icon(Icons.remove_red_eye_outlined),
-            label: 'Remind Word',
-          ),
-        ],
-      ),
+      bottomNavigationBar: const GameNavigationBar(selectedIndex: 2),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(12),
@@ -80,12 +69,13 @@ class _GameRoundPageState extends State<GameRoundPage> {
                               size: 60,
                               color: Colors.indigo,
                             ),
+                            const SizedBox(height: 8),
                             Text(
-                              players[index].name,
+                              '#${index + 1} ${players[index].name}',
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                                fontSize: 14,
                               ),
                               textAlign: TextAlign.center,
                             ),

@@ -3,15 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:undercover_game/data/words.dart';
 import 'package:undercover_game/models/word.dart';
 import 'package:undercover_game/utils/game_manager.dart';
+import '../widgets/game_navigation_bar.dart';
 
-class CardsPage extends StatefulWidget {
-  const CardsPage({super.key});
+class ChangeWordPage extends StatefulWidget {
+  const ChangeWordPage({super.key});
 
   @override
-  State<CardsPage> createState() => _CardsPageState();
+  State<ChangeWordPage> createState() => _ChangeWordPageState();
 }
 
-class _CardsPageState extends State<CardsPage> {
+class _ChangeWordPageState extends State<ChangeWordPage> {
   List players = [];
   int undercoverIndex = 0;
   Word chosenWord = Word("", "");
@@ -28,11 +29,9 @@ class _CardsPageState extends State<CardsPage> {
     revealed = List.generate(players.length, (_) => false);
   }
 
-  void _showRoleDialog(int userIndex, int cardIndex) {
-    final isUndercover = userIndex == undercoverIndex;
-    if (isUndercover) {
-      players[userIndex].isUndercover = true;
-    }
+  void _showRoleDialog(int tappedIndex) {
+    final index = currentIndex;
+    final isUndercover = index == undercoverIndex;
     setState(() {
       allowTap = false;
     });
@@ -42,11 +41,22 @@ class _CardsPageState extends State<CardsPage> {
         title: Text(
           isUndercover ? 'You are the Undercover!' : 'You are a Citizen!',
         ),
-        content: Text(
-          isUndercover
-              ? 'Your word: ${chosenWord.undercoverWord}'
-              : 'Your word: ${chosenWord.citizenWord}',
-          style: const TextStyle(fontSize: 20),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Player: ${players[index].name}',
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              isUndercover
+                  ? 'Your word: ${chosenWord.undercoverWord}'
+                  : 'Your word: ${chosenWord.citizenWord}',
+              style: const TextStyle(fontSize: 20),
+            ),
+          ],
         ),
         actions: [
           TextButton(
@@ -57,16 +67,10 @@ class _CardsPageState extends State<CardsPage> {
       ),
     ).then((_) {
       setState(() {
-        revealed[cardIndex] = true;
+        revealed[currentIndex] = true;
         currentIndex++;
         allowTap = true;
       });
-
-      if (currentIndex >= players.length) {
-        Future.delayed(const Duration(milliseconds: 300), () {
-          Navigator.pushReplacementNamed(context, '/describe');
-        });
-      }
     });
   }
 
@@ -74,27 +78,29 @@ class _CardsPageState extends State<CardsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Draw Your Card'),
+        automaticallyImplyLeading: false,
+        title: const Text('Change Word'),
         centerTitle: true,
         backgroundColor: Colors.indigo,
       ),
+      bottomNavigationBar: const GameNavigationBar(selectedIndex: 0),
       body: Column(
         children: [
-          SizedBox(height: 25),
+          const SizedBox(height: 16),
           Text(
             currentIndex < players.length
                 ? "Now it's ${players[currentIndex].name}'s turn to reveal!"
                 : 'All cards have been revealed!',
-            style: const TextStyle(fontSize: 18),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 16),
           Expanded(
             child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 mainAxisSpacing: 16,
                 crossAxisSpacing: 16,
-                childAspectRatio: 0.8,
+                childAspectRatio: 1.2,
               ),
               padding: const EdgeInsets.all(16),
               itemCount: players.length,
@@ -104,20 +110,16 @@ class _CardsPageState extends State<CardsPage> {
                 }
                 return GestureDetector(
                   onTap: allowTap && currentIndex < players.length
-                      ? () => _showRoleDialog(currentIndex, index)
+                      ? () => _showRoleDialog(index)
                       : null,
                   child: Card(
-                    color: Colors.black,
+                    color: Colors.indigo,
                     elevation: 4,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      side: const BorderSide(color: Colors.indigo, width: 2),
-                    ),
-                    child: const Center(
+                    child: Center(
                       child: Icon(
-                        Icons.visibility_off,
-                        size: 60,
-                        color: Colors.indigo,
+                        Icons.visibility,
+                        size: 48,
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -125,6 +127,16 @@ class _CardsPageState extends State<CardsPage> {
               },
             ),
           ),
+          if (currentIndex >= players.length)
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/describe');
+                },
+                child: const Text("Continue to Game"),
+              ),
+            ),
         ],
       ),
     );
