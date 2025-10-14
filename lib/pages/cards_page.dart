@@ -63,7 +63,7 @@ class _CardsPageState extends State<CardsPage> {
       });
 
       if (currentIndex >= players.length) {
-        Future.delayed(const Duration(milliseconds: 800), () {
+        Future.delayed(const Duration(milliseconds: 500), () {
           Navigator.pushNamed(context, '/describe');
         });
       }

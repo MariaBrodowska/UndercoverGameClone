@@ -1,0 +1,111 @@
+import 'package:flutter/material.dart';
+import 'package:undercover_game/models/player.dart';
+import 'package:undercover_game/utils/game_manager.dart';
+
+class GameRoundPage extends StatefulWidget {
+  const GameRoundPage({super.key});
+
+  @override
+  State<GameRoundPage> createState() => _GameRoundPageState();
+}
+
+class _GameRoundPageState extends State<GameRoundPage> {
+  List<Player> players = List.of(GameManager().players)..shuffle();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Description Time'),
+        centerTitle: true,
+        backgroundColor: Colors.indigo,
+      ),
+      bottomNavigationBar: NavigationBar(
+        destinations: [
+          NavigationDestination(
+            icon: Icon(Icons.keyboard_return),
+            label: 'New Word',
+          ),
+          NavigationDestination(icon: Icon(Icons.settings), label: 'Settings'),
+          NavigationDestination(icon: Icon(Icons.av_timer), label: 'Timer'),
+          NavigationDestination(
+            icon: Icon(Icons.remove_red_eye_outlined),
+            label: 'Remind Word',
+          ),
+        ],
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            children: [
+              SizedBox(height: 25),
+              Text(
+                "Round ${GameManager().currentRound}",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 5),
+              Text(
+                "Describe your secret word in the idicated order, using just a word or phrase.",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16),
+              ),
+              Expanded(
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    mainAxisSpacing: 12,
+                    crossAxisSpacing: 12,
+                    childAspectRatio: 1.0,
+                  ),
+                  padding: const EdgeInsets.all(16),
+                  itemCount: players.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      child: Card(
+                        color: Colors.black,
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: const BorderSide(
+                            color: Colors.indigo,
+                            width: 2,
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.person_2,
+                              size: 60,
+                              color: Colors.indigo,
+                            ),
+                            Text(
+                              players[index].name,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/vote');
+                },
+                child: const Text("Go to Vote"),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
