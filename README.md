@@ -1,10 +1,10 @@
 # Undercover Game
 
-A Flutter implementation of the Undercover social deduction game, created as a recruitment assignment.
+A Flutter implementation of the Undercover social game, created as a recruitment assignment.
 
 ## About
 
-This is a clone of the popular party game where players try to identify the undercover agent among them. The game supports 3-12 players and includes features such as role assignment, voting mechanics, timer functionality and rankings.
+This is a clone of the popular game where players try to identify the undercover agent among them. The game supports 3-12 players and includes features such as role assignment, voting mechanics, timer functionality and rankings.
 
 **Game Rules:**
 
@@ -154,7 +154,7 @@ lib/
 <table>
   <tr>
     <td align="center">
-      <img src="screenshots/game_round_page.png" alt="Game Round" width="180"/>
+      <img src="screenshots/game_round_page.png" alt="Game Round" width="200"/>
       <br>
       <em>Round overview</em>
     </td>
