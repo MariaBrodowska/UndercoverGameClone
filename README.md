@@ -127,27 +127,22 @@ lib/
 <table>
   <tr>
     <td align="center">
-      <img src="screenshots/change_word_page.png" alt="Change Word" width="180"/>
+      <img src="screenshots/change_word_page.png" alt="Change Word" width="200"/>
       <br>
       <em>Word change option</em>
     </td>
     <td align="center">
-      <img src="screenshots/names_list_page.gif" alt="Current Players" width="160"/>
+      <img src="screenshots/names_list_page.gif" alt="Current Players" width="180"/>
       <br>
       <em>Edit players names</em>
     </td>
     <td align="center">
-      <img src="screenshots/game_round_page.png" alt="Game Round" width="180"/>
-      <br>
-      <em>Round overview</em>
-    </td>
-    <td align="center">
-      <img src="screenshots/timer_page.png" alt="Timer" width="180"/>
+      <img src="screenshots/timer_page.png" alt="Timer" width="200"/>
       <br>
       <em>Description timer</em>
     </td>
     <td align="center">
-      <img src="screenshots/show_word_page.gif" alt="Word Display" width="160"/>
+      <img src="screenshots/show_word_page.gif" alt="Word Display" width="180"/>
       <br>
       <em>Player sees their word</em>
     </td>
@@ -159,17 +154,22 @@ lib/
 <table>
   <tr>
     <td align="center">
-      <img src="screenshots/vote_page.png" alt="Voting" width="250"/>
+      <img src="screenshots/game_round_page.png" alt="Game Round" width="180"/>
+      <br>
+      <em>Round overview</em>
+    </td>
+    <td align="center">
+      <img src="screenshots/vote_page.png" alt="Voting" width="200"/>
       <br>
       <em>Players vote to eliminate</em>
     </td>
     <td align="center">
-      <img src="screenshots/vote_results.png" alt="Results" width="250"/>
+      <img src="screenshots/vote_results.png" alt="Results" width="200"/>
       <br>
       <em>Voting results</em>
     </td>
     <td align="center">
-      <img src="screenshots/win_screen.png" alt="Winner" width="250"/>
+      <img src="screenshots/win_screen.png" alt="Winner" width="200"/>
       <br>
       <em>Game conclusion screen</em>
     </td>
