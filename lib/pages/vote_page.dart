@@ -140,6 +140,47 @@ class _VotePageState extends State<VotePage> {
     await prefs.setStringList('undercover_scores', undercoverScores);
   }
 
+  Future<void> finishGameAndGoHome() async {
+    calculateAndSavePoints();
+    await saveRankings();
+    gameManager.reset();
+    if (mounted) {
+      Navigator.pushReplacementNamed(context, '/');
+    }
+  }
+
+  void startNewRound() async {
+    calculateAndSavePoints();
+    await saveRankings();
+    GameManager().resetEliminationStatus();
+    if (mounted) {
+      Navigator.pushReplacementNamed(context, '/change_word');
+    }
+  }
+
+  Widget buildWinButtons() {
+    return Column(
+      children: [
+        const SizedBox(height: 16),
+        ElevatedButton(
+          onPressed: finishGameAndGoHome,
+          child: const Text('Back to Home', style: TextStyle(fontSize: 16)),
+        ),
+        const SizedBox(height: 16),
+        OutlinedButton(
+          onPressed: startNewRound,
+          style: OutlinedButton.styleFrom(
+            side: const BorderSide(color: Colors.orange, width: 2),
+          ),
+          child: const Text(
+            "Reset & New Round",
+            style: TextStyle(color: Colors.orange),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -391,39 +432,7 @@ class _VotePageState extends State<VotePage> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () async {
-                      calculateAndSavePoints();
-                      await saveRankings();
-                      gameManager.reset();
-                      if (mounted) {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          '/',
-                          (route) => false,
-                        );
-                      }
-                    },
-                    child: const Text(
-                      'Back to Home',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  OutlinedButton(
-                    onPressed: () {
-                      GameManager().resetEliminationStatus();
-                      Navigator.pushReplacementNamed(context, '/change_word');
-                    },
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Colors.orange, width: 2),
-                    ),
-                    child: const Text(
-                      "Reset & New Round",
-                      style: TextStyle(color: Colors.orange),
-                    ),
-                  ),
+                  buildWinButtons(),
                 ],
               )
             else
@@ -438,39 +447,7 @@ class _VotePageState extends State<VotePage> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () async {
-                      calculateAndSavePoints();
-                      await saveRankings();
-                      gameManager.reset();
-                      if (mounted) {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          '/',
-                          (route) => false,
-                        );
-                      }
-                    },
-                    child: const Text(
-                      'Back to Home',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  OutlinedButton(
-                    onPressed: () {
-                      GameManager().resetEliminationStatus();
-                      Navigator.pushReplacementNamed(context, '/change_word');
-                    },
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Colors.orange, width: 2),
-                    ),
-                    child: const Text(
-                      "Reset & New Round",
-                      style: TextStyle(color: Colors.orange),
-                    ),
-                  ),
+                  buildWinButtons(),
                 ],
               ),
           const SizedBox(height: 8),

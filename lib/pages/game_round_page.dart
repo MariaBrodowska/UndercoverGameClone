@@ -109,7 +109,7 @@ class _GameRoundPageState extends State<GameRoundPage> {
               ElevatedButton(
                 onPressed: activePlayers().length >= 3
                     ? () {
-                        Navigator.pushNamed(context, '/vote');
+                        Navigator.pushReplacementNamed(context, '/vote');
                       }
                     : null,
                 style: ElevatedButton.styleFrom(

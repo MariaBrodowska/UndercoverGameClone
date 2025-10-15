@@ -52,9 +52,9 @@ class _CardsPageState extends State<CardsPage> {
       });
 
       if (currentIndex >= players.length) {
-        Future.delayed(const Duration(milliseconds: 500), () {
+        if (mounted) {
           Navigator.pushReplacementNamed(context, '/describe');
-        });
+        }
       }
     });
   }
@@ -72,10 +72,11 @@ class _CardsPageState extends State<CardsPage> {
         child: Column(
           children: [
             const SizedBox(height: 25),
-            Text(
-              "Now it's ${players[currentIndex].name}'s turn to reveal!",
-              style: const TextStyle(fontSize: 16),
-            ),
+            if (currentIndex < players.length)
+              Text(
+                "Now it's ${players[currentIndex].name}'s turn to reveal!",
+                style: const TextStyle(fontSize: 16),
+              ),
             const SizedBox(height: 10),
             Expanded(
               child: GridView.builder(
