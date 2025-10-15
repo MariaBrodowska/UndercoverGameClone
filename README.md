@@ -105,7 +105,7 @@ lib/
       <em>Main menu</em>
     </td>
     <td align="center">
-      <img src="screenshots/players_list_page.gif" alt="Setup Page" width="200"/>
+      <img src="screenshots/players_list_page.gif" alt="Setup Page" width="180"/>
       <br>
       <em>Configure players</em>
     </td>
@@ -132,7 +132,7 @@ lib/
       <em>Word change option</em>
     </td>
     <td align="center">
-      <img src="screenshots/names_list_page.gif" alt="Current Players" width="180"/>
+      <img src="screenshots/names_list_page.gif" alt="Current Players" width="160"/>
       <br>
       <em>Edit players names</em>
     </td>
@@ -147,9 +147,9 @@ lib/
       <em>Description timer</em>
     </td>
     <td align="center">
-      <img src="screenshots/show_word_page.gif" alt="Word Display" width="180"/>
+      <img src="screenshots/show_word_page.gif" alt="Word Display" width="160"/>
       <br>
-      <em>Each player sees their word</em>
+      <em>Player sees their word</em>
     </td>
   </tr>
 </table>
