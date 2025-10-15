@@ -14,6 +14,10 @@ class GameRoundPage extends StatefulWidget {
 class _GameRoundPageState extends State<GameRoundPage> {
   List<Player> players = List.of(GameManager().players)..shuffle();
 
+  List<Player> activePlayers() {
+    return GameManager().players.where((p) => !p.isEliminated).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,11 +105,37 @@ class _GameRoundPageState extends State<GameRoundPage> {
                   },
                 ),
               ),
+              const SizedBox(height: 12),
               ElevatedButton(
+                onPressed: activePlayers().length >= 3
+                    ? () {
+                        Navigator.pushNamed(context, '/vote');
+                      }
+                    : null,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: activePlayers().length >= 3
+                      ? Colors.indigo
+                      : Colors.grey,
+                ),
+                child: Text(
+                  activePlayers().length >= 3
+                      ? "Go to Vote"
+                      : "Not enough players (min 3)",
+                ),
+              ),
+              const SizedBox(height: 8),
+              OutlinedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/vote');
+                  GameManager().resetEliminationStatus();
+                  Navigator.pushReplacementNamed(context, '/change_word');
                 },
-                child: const Text("Go to Vote"),
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(color: Colors.orange, width: 2),
+                ),
+                child: const Text(
+                  "Reset & New Round",
+                  style: TextStyle(color: Colors.orange),
+                ),
               ),
             ],
           ),

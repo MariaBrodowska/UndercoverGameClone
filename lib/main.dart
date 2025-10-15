@@ -8,6 +8,7 @@ import 'package:undercover_game/pages/players_list_page.dart';
 import 'package:undercover_game/pages/timer_page.dart';
 import 'package:undercover_game/pages/show_word_page.dart';
 import 'package:undercover_game/pages/vote_page.dart';
+import 'package:undercover_game/pages/ranking_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         '/players': (context) => const PlayersListPage(),
         '/timer': (context) => const TimerPage(),
         '/show_word': (context) => const ShowWordPage(),
+        '/ranking': (context) => const RankingPage(),
       },
     );
   }

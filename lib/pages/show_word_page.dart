@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:undercover_game/utils/game_manager.dart';
 import 'package:undercover_game/widgets/game_navigation_bar.dart';
+import 'package:undercover_game/models/player.dart';
 
 class ShowWordPage extends StatefulWidget {
   const ShowWordPage({super.key});
@@ -10,8 +11,14 @@ class ShowWordPage extends StatefulWidget {
 }
 
 class _ShowWordPageState extends State<ShowWordPage> {
+  List<Player> activePlayers() {
+    return GameManager().players.where((p) => !p.isEliminated).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final activePlayersList = activePlayers();
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -32,9 +39,9 @@ class _ShowWordPageState extends State<ShowWordPage> {
             const SizedBox(height: 20),
             Expanded(
               child: ListView.builder(
-                itemCount: GameManager().players.length,
+                itemCount: activePlayersList.length,
                 itemBuilder: (context, index) {
-                  final player = GameManager().players[index];
+                  final player = activePlayersList[index];
                   return Card(
                     child: ListTile(
                       title: Text(player.name),

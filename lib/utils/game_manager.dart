@@ -26,6 +26,15 @@ class GameManager {
     isTimerRunning = false;
   }
 
+  void resetEliminationStatus() {
+    for (var player in players) {
+      player.isEliminated = false;
+      player.isUndercover = false;
+      player.points = 0;
+    }
+    currentRound = 1;
+  }
+
   void startTimer() {
     currentTimeLeft = timerDuration;
     isTimerRunning = true;

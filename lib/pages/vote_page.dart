@@ -3,6 +3,7 @@ import 'package:undercover_game/data/words.dart';
 import 'package:undercover_game/utils/game_manager.dart';
 import 'package:undercover_game/widgets/game_navigation_bar.dart';
 import 'package:undercover_game/models/player.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class VotePage extends StatefulWidget {
   const VotePage({super.key});
@@ -14,6 +15,7 @@ class VotePage extends StatefulWidget {
 class _VotePageState extends State<VotePage> {
   final gameManager = GameManager();
   final Map<String, int> votes = {};
+  final Map<String, String> whoVotedFor = {};
   int currentVoterIndex = 0;
   bool showResults = false;
   String? selectedPlayer;
@@ -34,6 +36,8 @@ class _VotePageState extends State<VotePage> {
     }
 
     setState(() {
+      final currentVoter = activePlayers()[currentVoterIndex];
+      whoVotedFor[currentVoter.name] = selectedPlayer!;
       votes[selectedPlayer!] = (votes[selectedPlayer!] ?? 0) + 1;
       totalVotesCast++;
       selectedPlayer = null;
@@ -62,9 +66,11 @@ class _VotePageState extends State<VotePage> {
   }
 
   void goToNextRound() {
+    calculateAndSavePoints();
     setState(() {
       gameManager.currentRound++;
       votes.clear();
+      whoVotedFor.clear();
       currentVoterIndex = 0;
       showResults = false;
       isTie = false;
@@ -86,6 +92,52 @@ class _VotePageState extends State<VotePage> {
 
   bool shouldShowWinScreen() {
     return isUndercoverEliminated() || activePlayers().length <= 2;
+  }
+
+  void calculateAndSavePoints() {
+    for (var player in gameManager.players) {
+      if (player.isUndercover) {
+        if (!player.isEliminated) player.addPoints(10);
+        player.addPoints(-5 * (votes[player.name] ?? 0));
+      } else {
+        if (!player.isEliminated) player.addPoints(5);
+        final votedFor = whoVotedFor[player.name];
+        if (votedFor != null) {
+          final votedPlayer = gameManager.players.firstWhere(
+            (p) => p.name == votedFor,
+          );
+          if (votedPlayer.isUndercover) player.addPoints(3);
+        }
+      }
+    }
+  }
+
+  Future<void> saveRankings() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    List<String> citizenNames = prefs.getStringList('citizen_names') ?? [];
+    List<String> citizenScores = prefs.getStringList('citizen_scores') ?? [];
+    List<String> undercoverNames =
+        prefs.getStringList('undercover_names') ?? [];
+    List<String> undercoverScores =
+        prefs.getStringList('undercover_scores') ?? [];
+
+    for (var player in gameManager.players) {
+      if (player.points > 0) {
+        if (player.isUndercover) {
+          undercoverNames.add(player.name);
+          undercoverScores.add(player.points.toString());
+        } else {
+          citizenNames.add(player.name);
+          citizenScores.add(player.points.toString());
+        }
+      }
+    }
+
+    await prefs.setStringList('citizen_names', citizenNames);
+    await prefs.setStringList('citizen_scores', citizenScores);
+    await prefs.setStringList('undercover_names', undercoverNames);
+    await prefs.setStringList('undercover_scores', undercoverScores);
   }
 
   @override
@@ -341,17 +393,35 @@ class _VotePageState extends State<VotePage> {
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      calculateAndSavePoints();
+                      await saveRankings();
                       gameManager.reset();
-                      Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        '/',
-                        (route) => false,
-                      );
+                      if (mounted) {
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/',
+                          (route) => false,
+                        );
+                      }
                     },
                     child: const Text(
                       'Back to Home',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  OutlinedButton(
+                    onPressed: () {
+                      GameManager().resetEliminationStatus();
+                      Navigator.pushReplacementNamed(context, '/change_word');
+                    },
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Colors.orange, width: 2),
+                    ),
+                    child: const Text(
+                      "Reset & New Round",
+                      style: TextStyle(color: Colors.orange),
                     ),
                   ),
                 ],
@@ -370,17 +440,35 @@ class _VotePageState extends State<VotePage> {
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      calculateAndSavePoints();
+                      await saveRankings();
                       gameManager.reset();
-                      Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        '/',
-                        (route) => false,
-                      );
+                      if (mounted) {
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/',
+                          (route) => false,
+                        );
+                      }
                     },
                     child: const Text(
                       'Back to Home',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  OutlinedButton(
+                    onPressed: () {
+                      GameManager().resetEliminationStatus();
+                      Navigator.pushReplacementNamed(context, '/change_word');
+                    },
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Colors.orange, width: 2),
+                    ),
+                    child: const Text(
+                      "Reset & New Round",
+                      style: TextStyle(color: Colors.orange),
                     ),
                   ),
                 ],

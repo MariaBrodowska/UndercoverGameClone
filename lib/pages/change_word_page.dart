@@ -25,7 +25,8 @@ class _ChangeWordPageState extends State<ChangeWordPage> {
   @override
   void initState() {
     super.initState();
-    players = List.of(GameManager().players)..shuffle();
+    players = List.of(GameManager().players.where((p) => !p.isEliminated))
+      ..shuffle();
     for (var player in players) {
       player.isUndercover = false;
     }

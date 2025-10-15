@@ -23,6 +23,14 @@ class HomePage extends StatelessWidget {
               },
               child: const Text("Start Game"),
             ),
+            const SizedBox(height: 16),
+            OutlinedButton.icon(
+              onPressed: () {
+                Navigator.pushNamed(context, '/ranking');
+              },
+              icon: const Icon(Icons.emoji_events),
+              label: const Text("View Rankings"),
+            ),
           ],
         ),
       ),
